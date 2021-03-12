@@ -39,6 +39,18 @@ namespace API.Extensions
             //services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddSingleton<PresenceTracker>();
+            services.AddHeaderPropagation(options =>
+            {
+                // for tracing
+                options.Headers.Add("x-request-id");
+                options.Headers.Add("x-b3-traceid");
+                options.Headers.Add("x-b3-spanid");
+                options.Headers.Add("x-b3-parentspanid");
+                options.Headers.Add("x-b3-sampled");
+                options.Headers.Add("x-b3-flags");
+                options.Headers.Add("x-ot-span-context");
+
+            });
             return services;
         }
     }

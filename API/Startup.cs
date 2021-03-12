@@ -45,10 +45,11 @@ namespace API
         //app.UseDeveloperExceptionPage();
         app.UseSwagger();
         app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
+        app.UseHttpsRedirection();
       }
 
-      app.UseHttpsRedirection();
 
+      app.UseHeaderPropagation();
       app.UseRouting();
       app.UseCors(options => {
           options.AllowAnyHeader().AllowCredentials().AllowAnyMethod().WithOrigins("http://localhost:4200");
