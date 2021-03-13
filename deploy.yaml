@@ -1,0 +1,171 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-api-original
+spec:
+  selector:
+    matchLabels:
+      app: chat-api
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template: # template for the pods
+    metadata:
+      name: chat-api
+      labels:
+        app: chat-api
+        version: original
+    spec:
+      containers:
+      - name: chat-api
+        env:
+          # it should be "ConnectionStrings:DefaultConnection" 
+          # For .Net Core, the current (ugly) workaround is to use double underscores
+          # https://github.com/kubernetes/kubernetes/issues/53201 
+          - name: ConnectionStrings__DefaultConnection
+            valueFrom:
+              configMapKeyRef:
+              # name of ConfigMap
+                name: data-configuration
+                key: database.url
+          - name: TokenKey
+            valueFrom:
+              configMapKeyRef:
+                name: data-configuration
+                key: tokenkey
+          - name: CloudinarySettings__CloudName
+            valueFrom:
+              configMapKeyRef:
+                name: data-configuration
+                key: cloudinarysettings.cloudname
+          - name: CloudinarySettings__ApiKey
+            valueFrom:
+              configMapKeyRef:
+                name: data-configuration
+                key: cloudinarysettings.apikey
+          - name: CloudinarySettings__ApiSecret
+            valueFrom:
+              configMapKeyRef:
+                name: data-configuration
+                key: cloudinarysettings.apisecret
+        image: 839928622/chat-api
+        # pull image from remote server ? 
+        imagePullPolicy: IfNotPresent
+        readinessProbe:
+          httpGet:
+            path: /WeatherForecast
+            port: 5000
+        livenessProbe:
+          httpGet:
+            path: /WeatherForecast
+            port: 5000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-api-experimental
+spec:
+  selector:
+    matchLabels:
+      app: chat-api
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template: # template for the pods
+    metadata:
+      name: chat-api
+      labels:
+        app: chat-api
+        version: experimental
+    spec:
+      containers:
+      - name: chat-api
+        env:
+          # it should be "ConnectionStrings:DefaultConnection" 
+          # For .Net Core, the current (ugly) workaround is to use double underscores
+          # https://github.com/kubernetes/kubernetes/issues/53201 
+          - name: ConnectionStrings__DefaultConnection
+            valueFrom:
+              secretKeyRef:
+                name: user-pass
+                key: store-connectionstring
+          - name: ConnectionStrings__IdentityConnection
+            valueFrom:
+              secretKeyRef:
+                name: user-pass
+                key: identity-connectionstring
+        image: 839928622/chat-api
+        # pull image from remote server ? 
+        imagePullPolicy: IfNotPresent
+        readinessProbe:
+          httpGet:
+            path: /WeatherForecast
+            port: 5000
+        livenessProbe:
+          httpGet:
+            path: /WeatherForecast
+            port: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chat-api
+
+spec:
+  # This defines which pods are going to be represented by this Service
+  # The service becomes a network endpoint for either other services
+  # or maybe external users to connect to (eg browser)
+  # minikube start --extra-config=apiserver.service-node-port-range=80-30000, 
+  # port 80 can be used as well
+  selector:
+    app: chat-api
+
+  ports:
+    - name: http
+      port: 5000
+      targetPort: 5000
+  type: ClusterIP
+---
+kind: VirtualService
+apiVersion: networking.istio.io/v1alpha3
+metadata:
+  name: chat-api
+  namespace: default
+spec:
+  hosts:      # which incoming host are we applying the proxy rules to???
+    - "chat-api" #
+  
+  http:
+    - route:
+        - destination:
+            host: chat-api
+            subset: original
+          weight: 100
+        - destination:
+            host: chat-api
+            subset: experimental
+          weight: 0
+
+---
+kind: DestinationRule
+apiVersion: networking.istio.io/v1alpha3
+metadata:
+  name: chat-api
+  namespace: default
+spec:
+  host: chat-api
+  subsets:
+    - labels:
+        version: original
+      name: original
+    - labels:
+        version: experimental
+      name: experimental
+     
+
