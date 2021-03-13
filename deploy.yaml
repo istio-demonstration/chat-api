@@ -132,40 +132,6 @@ spec:
       targetPort: 5000
   type: ClusterIP
 ---
-kind: VirtualService
-apiVersion: networking.istio.io/v1alpha3
-metadata:
-  name: chat-api
-  namespace: default
-spec:
-  hosts:      # which incoming host are we applying the proxy rules to???
-    - "chat-api" #
-  
-  http:
-    - route:
-        - destination:
-            host: chat-api
-            subset: original
-          weight: 100
-        - destination:
-            host: chat-api
-            subset: experimental
-          weight: 0
 
----
-kind: DestinationRule
-apiVersion: networking.istio.io/v1alpha3
-metadata:
-  name: chat-api
-  namespace: default
-spec:
-  host: chat-api
-  subsets:
-    - labels:
-        version: original
-      name: original
-    - labels:
-        version: experimental
-      name: experimental
      
 

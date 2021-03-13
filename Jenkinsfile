@@ -29,7 +29,7 @@ pipeline {
            script {
                dockerImage = docker.build registry + ":${GITCOMMITSHA}"
             }
-         sh 'echo dockerImage is: ${dockerImage}'
+         sh 'echo dockerImage is ${dockerImage}'
          }
       }
 
