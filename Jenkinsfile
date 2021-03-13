@@ -29,7 +29,7 @@ pipeline {
            script {
                dockerImage = docker.build registry + ":${GITCOMMITSHA}"
             }
-         sh 'echo dockerImage is ${dockerImage}'
+         sh 'echo dockerImage is: ${dockerImage}'
          }
       }
 
@@ -47,7 +47,7 @@ pipeline {
       stage('Deploy to Cluster') {
           steps {
                   sh 'kubectl apply -f deploy.yaml'
-                  sh 'kubectl set image deployments/chat-api-original  chat-api=${dockerImage}'
+                  sh 'kubectl set image deployments/chat-api-original  chat-api=${SERVICE_NAME}:${GITCOMMITSHA}'
                 }
       }
    }
