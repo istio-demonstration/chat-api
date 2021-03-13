@@ -30,7 +30,7 @@ spec:
               configMapKeyRef:
               # name of ConfigMap
                 name: data-configuration
-                key: database.url
+                key: database.connectionstring
           - name: TokenKey
             valueFrom:
               configMapKeyRef:
