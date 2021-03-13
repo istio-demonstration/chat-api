@@ -27,17 +27,18 @@ pipeline {
              sh 'echo current git commit is ${GITCOMMITSHA}'
              sh 'docker image build  -t ${SERVICE_NAME}:latest -t ${SERVICE_NAME}:${GITCOMMITSHA} .'
            script {
-               dockerImage = docker.build registry + ":${GITCOMMITSHA}" + " -t ${registry}:latest"
+               dockerImage = docker.build registry
             }
-         sh 'echo dockerImage is: ${dockerImage}'
+
          }
       }
 
-        stage('push image') {
+        stage('push image and tag image') {
          steps {
            script {
             docker.withRegistry( '', dockerhub_credential){
-               dockerImage.push()
+               dockerImage.push("${GITCOMMITSHA}")
+               dockerImage.push("latest")
             }
 
            }
