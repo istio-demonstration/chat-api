@@ -92,14 +92,30 @@ spec:
           # https://github.com/kubernetes/kubernetes/issues/53201 
           - name: ConnectionStrings__DefaultConnection
             valueFrom:
-              secretKeyRef:
-                name: user-pass
-                key: store-connectionstring
-          - name: ConnectionStrings__IdentityConnection
+              configMapKeyRef:
+              # name of ConfigMap
+                name: data-configuration
+                key: database.connectionstring
+          - name: TokenKey
             valueFrom:
-              secretKeyRef:
-                name: user-pass
-                key: identity-connectionstring
+              configMapKeyRef:
+                name: data-configuration
+                key: tokenkey
+          - name: CloudinarySettings__CloudName
+            valueFrom:
+              configMapKeyRef:
+                name: data-configuration
+                key: cloudinarysettings.cloudname
+          - name: CloudinarySettings__ApiKey
+            valueFrom:
+              configMapKeyRef:
+                name: data-configuration
+                key: cloudinarysettings.apikey
+          - name: CloudinarySettings__ApiSecret
+            valueFrom:
+              configMapKeyRef:
+                name: data-configuration
+                key: cloudinarysettings.apisecret
         image: 839928622/chat-api
         # pull image from remote server ? 
         imagePullPolicy: IfNotPresent
