@@ -52,7 +52,7 @@ namespace API
       app.UseHeaderPropagation();
       app.UseRouting();
       app.UseCors(options => {
-          options.AllowAnyHeader().AllowCredentials().AllowAnyMethod().WithOrigins("http://localhost:4200");
+          options.AllowAnyHeader().AllowCredentials().AllowAnyMethod();
       });
       app.UseAuthentication();
       app.UseAuthorization();
@@ -65,7 +65,7 @@ namespace API
         endpoints.MapControllers();
         endpoints.MapHub<PresenceHub>("hubs/presence");
         endpoints.MapHub<MessageHub>("hubs/message");
-        endpoints.MapFallbackToController("Index", "Fallback");
+        //endpoints.MapFallbackToController("Index", "Fallback");
       });
     }
   }
