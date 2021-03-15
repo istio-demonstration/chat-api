@@ -52,7 +52,7 @@ namespace API
       app.UseHeaderPropagation();
       app.UseRouting();
       app.UseCors(options => {
-          options.AllowAnyHeader().AllowCredentials().AllowAnyMethod().AllowAnyOrigin();
+          options.AllowAnyHeader().AllowCredentials().AllowAnyMethod().WithOrigins("http://www.chatroom365.com");
       });
       app.UseAuthentication();
       app.UseAuthorization();
