@@ -52,7 +52,7 @@ namespace API
       app.UseHeaderPropagation();
       app.UseRouting();
       app.UseCors(options => {
-          options.AllowAnyHeader().AllowCredentials().AllowAnyMethod();
+          options.AllowAnyHeader().AllowCredentials().AllowAnyMethod().AllowAnyOrigin();
       });
       app.UseAuthentication();
       app.UseAuthorization();
