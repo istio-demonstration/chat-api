@@ -1,4 +1,5 @@
-﻿using API.Data;
+﻿using System;
+using API.Data;
 using API.Helper;
 using API.Interfaces;
 using API.Services;
@@ -8,6 +9,7 @@ using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Primitives;
 
 namespace API.Extensions
 {
@@ -42,7 +44,7 @@ namespace API.Extensions
             services.AddHeaderPropagation(options =>
             {
                 // for tracing
-                options.Headers.Add("x-request-id");
+                options.Headers.Add("x-request-id", config => new StringValues(Guid.NewGuid().ToString()));
                 options.Headers.Add("x-b3-traceid");
                 options.Headers.Add("x-b3-spanid");
                 options.Headers.Add("x-b3-parentspanid");
