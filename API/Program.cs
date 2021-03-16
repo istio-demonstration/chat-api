@@ -42,15 +42,24 @@ namespace API
                 .ConfigureAppConfiguration((hostingContext, config) =>
         {
             var env = hostingContext.HostingEnvironment;
+            
             config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
             config.AddEnvironmentVariables();
+          
         })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     var assemblyName = typeof(Startup).GetTypeInfo().Assembly.FullName;
                     webBuilder.UseStartup(assemblyName ?? string.Empty);
+
                     // webBuilder.UseStartup<Startup>();
+                    var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+                    if (environment == Environments.Production)
+                    {
+                        webBuilder.UseUrls("http://+:5000");
+                    }
+
                 });
     }
 }
