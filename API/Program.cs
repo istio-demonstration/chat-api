@@ -54,12 +54,7 @@ namespace API
                     webBuilder.UseStartup(assemblyName ?? string.Empty);
 
                     // webBuilder.UseStartup<Startup>();
-                    var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-                    if (environment == Environments.Production)
-                    {
-                        webBuilder.UseUrls("http://+:5000");
-                    }
-
+                    webBuilder.UseUrls("http://+:5000");
                 });
     }
 }
