@@ -32,6 +32,7 @@ namespace API.SignalR
                 if (OnlineUsers.ContainsKey(username))
                 {
                     OnlineUsers[username].Add(connectionId);
+                    isOnline = true;
                 }
                 else
                 {
