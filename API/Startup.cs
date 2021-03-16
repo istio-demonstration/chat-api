@@ -70,7 +70,7 @@ namespace API
     }
   }
   public class StartupDevelopment
-  {
+    {
       private readonly IConfiguration _configuration;
 
       public StartupDevelopment(IConfiguration configuration)

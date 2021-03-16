@@ -51,9 +51,6 @@ namespace API
                     var assemblyName = typeof(Startup).GetTypeInfo().Assembly.FullName;
                     webBuilder.UseStartup(assemblyName ?? string.Empty);
                     // webBuilder.UseStartup<Startup>();
-
-                    webBuilder.UseUrls("http://+:5000");
-                    webBuilder.UseUrls("https://+:5001");
                 });
     }
 }
