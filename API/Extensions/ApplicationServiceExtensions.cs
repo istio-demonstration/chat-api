@@ -51,6 +51,7 @@ namespace API.Extensions
                 options.Headers.Add("x-b3-sampled");
                 options.Headers.Add("x-b3-flags");
                 options.Headers.Add("x-ot-span-context");
+                options.Headers.Add("b3");
                 // custom header for dark release
                 options.Headers.Add("x-dark-release");
 

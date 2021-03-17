@@ -87,6 +87,8 @@ spec:
       containers:
       - name: chat-api
         env:
+          - name: ASPNETCORE_ENVIRONMENT
+          - value: Production
           # it should be "ConnectionStrings:DefaultConnection" 
           # For .Net Core, the current (ugly) workaround is to use double underscores
           # https://github.com/kubernetes/kubernetes/issues/53201 

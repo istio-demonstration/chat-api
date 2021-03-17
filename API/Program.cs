@@ -22,11 +22,11 @@ namespace API
             var services = scope.ServiceProvider;
             try
             {
-               var context = services.GetRequiredService<DataContext>();
-               var userManager = services.GetRequiredService<UserManager<AppUser>>();
-               var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
-               await context.Database.MigrateAsync();
-               await Seed.SeedUsers(userManager, roleManager);
+                var context = services.GetRequiredService<DataContext>();
+                var userManager = services.GetRequiredService<UserManager<AppUser>>();
+                var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
+                await context.Database.MigrateAsync();
+                await Seed.SeedUsers(userManager, roleManager);
             }
             catch (Exception e)
             {
@@ -42,19 +42,22 @@ namespace API
                 .ConfigureAppConfiguration((hostingContext, config) =>
         {
             var env = hostingContext.HostingEnvironment;
-            
+
             config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
             config.AddEnvironmentVariables();
-          
+
         })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     var assemblyName = typeof(Startup).GetTypeInfo().Assembly.FullName;
                     webBuilder.UseStartup(assemblyName ?? string.Empty);
-
                     // webBuilder.UseStartup<Startup>();
-                    webBuilder.UseUrls("http://+:5000");
+                    var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+                    if (environmentName == Environments.Production)
+                    {
+                        webBuilder.UseUrls("http://+:5000");
+                    }
                 });
     }
 }
