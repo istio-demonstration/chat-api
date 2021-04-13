@@ -188,24 +188,6 @@
         "IsMain": true
       }
     ]
-  },
-  {
-    "UserName": "JiangBin",
-    "Gender": "male",
-    "DateOfBirth": "1994-02-21",
-    "KnownAs": "JiangBin",
-    "Created": "2020-02-25",
-    "LastActive": "2020-06-11",
-    "Introduction": "我是蒋斌",
-    "LookingFor": "正在寻找.net 工程师相关的工作",
-    "Interests": "喜欢听歌",
-    "City": "上海",
-    "Country": "中国",
-    "Photos": [
-      {
-        "Url": "https://randomuser.me/api/portraits/men/93.jpg",
-        "IsMain": true
-      }
-    ]
   }
+  
 ]

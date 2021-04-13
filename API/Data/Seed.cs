@@ -20,33 +20,43 @@ namespace API.Data
             var userData = await System.IO.File.ReadAllTextAsync("../API/SeedingData/UserSeedData.json");
             var users =  JsonSerializer.Deserialize<List<AppUser>>(userData);
 
-            foreach (var user in users)
+            if (users != null)
             {
-                //using var hmac = new HMACSHA512();
-                //user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("Password"));
+                // Create Users
+                foreach (var user in users)
+                {
+                    //using var hmac = new HMACSHA512();
+                    //user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("Password"));
 
-                //user.PasswordSalt = hmac.Key;
+                    //user.PasswordSalt = hmac.Key;
 
-                await userManager.CreateAsync(user, "Password");
+                    await userManager.CreateAsync(user, "Password");
+                }
+
+                // Create Roles
+                var roles = new List<AppRole>()
+                {
+                    new AppRole() {Name = "Member"},
+                    new AppRole() {Name = "Admin"},
+                    new AppRole() {Name = "Moderator"},
+                };
+                //roles.ForEach(async =>
+                //{
+                // will lead to an exception: A second operation started on this context before a previous operation completed
+                //    // do something
+                //});
+                foreach (var role in roles)
+                {
+                    await roleManager.CreateAsync(role);
+                }
+
+                foreach (var user in users)
+                {
+                    await userManager.AddToRoleAsync(user, "Member");
+                }
+             
             }
 
-            var roles = new List<AppRole>()
-            {
-                new AppRole(){Name = "Member"},
-                new AppRole(){Name = "Admin"},
-                new AppRole(){Name = "Moderator"},
-            };
-
-            roles.ForEach(async r =>
-            {
-                await roleManager.CreateAsync(r);
-            });
-
-            users.ForEach(async user =>
-            {
-                await userManager.AddToRoleAsync(user, "Member");
-
-            });
             // admin
             var admin = new AppUser()
             {

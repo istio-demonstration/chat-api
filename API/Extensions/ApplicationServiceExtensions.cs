@@ -20,7 +20,7 @@ namespace API.Extensions
         {
             services.AddDbContext<DataContext>(options =>
             {  //GetConnectionString
-                options.UseNpgsql(configuration["ConnectionStrings:DefaultConnection"]);
+                options.UseSqlServer(configuration["ConnectionStrings:DefaultConnection"]);
             });
 
             services.AddCors();

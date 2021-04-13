@@ -52,12 +52,12 @@ namespace API.Data
             modelBuilder.Entity<UserLike>().HasOne(s => s.SourceUser)
                                            .WithMany(l => l.LikedUsers)
                                            .HasForeignKey(s => s.SourceUserId)
-                                           .OnDelete(DeleteBehavior.Cascade);
+                                           .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<UserLike>().HasOne(s => s.LikedUser)
                                            .WithMany(l => l.LikedByUsers)
                                            .HasForeignKey(s => s.LikeUserId)
-                                           .OnDelete(DeleteBehavior.Cascade);
+                                           .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Message>().HasOne(u => u.Recipient)
                                           .WithMany(m => m.MessagesReceived)
@@ -78,6 +78,7 @@ namespace API.Data
             modelBuilder.Entity<Group>().ToTable("Groups");
             //Connection
             modelBuilder.Entity<Connection>().ToTable("Connections");
+          
 
         }
     }
