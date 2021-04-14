@@ -40,8 +40,8 @@ namespace API.Controllers
         [Route("CircuitBreaker")]
         public IActionResult CircuitBreaker()
         {
-            return Ok("CircuitBreaker returns OK");
-            //throw new InvalidOperationException("CircuitBreaker test ");
+           // return Ok("CircuitBreaker returns OK");
+            throw new InvalidOperationException("CircuitBreaker test ");
         }
     }
 }
