@@ -35,5 +35,13 @@ namespace API.Controllers
             })
             .ToArray();
         }
+
+        [HttpGet]
+        [Route("CircuitBreaker")]
+        public IActionResult CircuitBreaker()
+        {
+            return Ok("CircuitBreaker returns OK");
+            //throw new InvalidOperationException("CircuitBreaker test ");
+        }
     }
 }
