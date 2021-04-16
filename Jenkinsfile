@@ -50,7 +50,7 @@ pipeline {
                   sh 'kubectl apply -f deploy.yaml'
                   sh 'kubectl set image deployments/chat-api-experimental chat-api=${registry}:${GITCOMMITSHA}'
                    // after first deploy, u can comment this out
-                  //sh 'kubectl set image deployments/chat-api-original  chat-api=${registry}:${GITCOMMITSHA}'
+                  sh 'kubectl set image deployments/chat-api-original  chat-api=${registry}:ba25590'
                  
                  
                 }
