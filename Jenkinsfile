@@ -9,7 +9,8 @@ pipeline {
      GITCOMMITSHA = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
      SERVICE_NAME = "chat-api"
       dockerhub_credential='DockerHubId'
-     registry = '839928622/chat-api'
+      registry = 'registry.cn-hangzhou.aliyuncs.com/hyper/test'
+     // registry = '839928622/chat-api'
      dockerImage = ''
    
    }
@@ -27,6 +28,7 @@ pipeline {
              sh 'echo current git commit is ${GITCOMMITSHA}'
              sh 'docker image build  -t ${SERVICE_NAME}:latest -t ${SERVICE_NAME}:${GITCOMMITSHA} .'
            script {
+              // documentation see: https://docs.cloudbees.com/docs/admin-resources/latest/plugins/docker-workflow#docker-workflow-sect-advanced
                dockerImage = docker.build registry
             }
 
