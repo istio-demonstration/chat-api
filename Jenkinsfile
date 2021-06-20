@@ -38,7 +38,13 @@ pipeline {
         stage('push image and tag image') {
          steps {
            script {
-            docker.withRegistry( '', dockerhub_credential){
+            // this one is about to push to dockerhub
+            // docker.withRegistry( '', dockerhub_credential){
+            //    dockerImage.push("${GITCOMMITSHA}")
+            //    dockerImage.push("latest")
+            // }
+             // and this one is about to push to private registry
+             docker.withRegistry( 'https://registry.cn-hangzhou.aliyuncs.com', dockerhub_credential){
                dockerImage.push("${GITCOMMITSHA}")
                dockerImage.push("latest")
             }
